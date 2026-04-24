@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router"
 import HomePage from "./pages/HomePage"
 import ShowMovie from "./Components/VeiwMovie"
-import ShowtheShow from "./Components/VeiwShow"
+import ViewShow from "./Components/ViewShow"
 import NavBar from "./Components/NavBar"
 function App() {
 
@@ -10,8 +10,8 @@ function App() {
       <NavBar/>
       <Routes>
         <Route index element={<HomePage/>} />
-        <Route path="/movie" element={<ShowMovie/>} />
-        <Route path="/show" element= {<ShowtheShow/>}/>
+        <Route path="/:type" element={<ShowMovie/>} />
+        <Route path="/:type" element= {<ViewShow/>}/>
       </Routes>
     </>
  

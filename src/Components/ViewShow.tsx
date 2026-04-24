@@ -12,13 +12,21 @@ interface ShowType {
     };
 }
 
-const ShowtheShow = ({ show }: { show?: ShowType }) => {
+const ViewShow = ({ show }: { show?: ShowType }) => {
     if (!show) {
         return <div>No show data</div>;
     }
 
+    const handleViewShows = () => {
+        fetch(`http://localhost:5173/shows/${show._id}`)
+            .then(res => res.json())
+            .then(msg => {
+                console.log(msg);
+            });
+    };
+
     return (
-        <div className="mb-3 p-3 border-2 w-75">
+        <div className="mb-3 p-3 border-2 w-75 cursor-pointer" onClick={handleViewShows}>
             <div>Movie: {show.title}</div>
             <div>Plot: {show.plot}</div>
             <div>
@@ -31,4 +39,4 @@ const ShowtheShow = ({ show }: { show?: ShowType }) => {
     );
 };
 
-export default ShowtheShow;
+export default ViewShow;

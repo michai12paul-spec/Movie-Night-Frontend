@@ -1,0 +1,64 @@
+import { format } from "date-and-time";
+
+interface ShowType {
+    _id: string;
+    title: string;
+    plot: string;
+    released: string;
+    genres: string[];
+    imdb: {
+        rating: number;
+        votes: number;
+    };
+}
+
+const ShowtheShow = ({ show }: { show?: ShowType }) => {
+    if (!show) {
+        return <div>No show data</div>;
+    }
+
+    const handleVeiwShows = () => {
+        // console.log("Get 10 shows", show._id)
+        const addShowReq = new Request(
+            `http://localhost:5173/shows/${show._id}`,
+            {
+                method: 'GET'
+            }
+        )
+        fetch(addShowReq)
+            .then(res => res.json())
+            .then(msg => {
+                console.log(msg)
+            })
+
+    }
+
+    return (
+        <div key={show._id}>
+            <div className="mb-3 p-3 border-2 w-75 cursor-pointer" onClick={handleVeiwShows}>
+                <div>Movie: {show.title}</div>
+                <div>Plot: {show.plot}</div>
+                <div className="grid grid-cols-3"></div>
+
+
+                {
+                    show.genres.map((trn: ShowType) => {
+                        return (
+                        
+                        <div>
+                            Release Date: {format(new Date(show.released), 'MMM DD YYYY')}
+                        </div>
+                        <div>Genre: {show.genres.join(', ')}</div>
+                        <div>IMDb Rating: {show.imdb.rating}</div>
+                        <div>IMDb Votes: {show.imdb.votes}</div>
+                        )
+                    }
+            </div>
+        </div>
+    );
+};
+
+
+
+
+export default ShowtheShow;
