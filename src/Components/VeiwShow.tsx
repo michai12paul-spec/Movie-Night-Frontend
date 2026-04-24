@@ -1,6 +1,6 @@
 import { format } from "date-and-time";
 
-interface MovieType {
+interface ShowType {
     _id: string;
     title: string;
     plot: string;
@@ -12,23 +12,23 @@ interface MovieType {
     };
 }
 
-const ShowMovie = ({ movie }: { movie?: MovieType }) => {
-    if (!movie) {
-        return <div>No movie data</div>;
+const ShowtheShow = ({ show }: { show?: ShowType }) => {
+    if (!show) {
+        return <div>No show data</div>;
     }
 
     return (
         <div className="mb-3 p-3 border-2 w-75">
-            <div>Movie: {movie.title}</div>
-            <div>Plot: {movie.plot}</div>
+            <div>Movie: {show.title}</div>
+            <div>Plot: {show.plot}</div>
             <div>
-                Release Date: {format(new Date(movie.released), 'MMM DD YYYY')}
+                Release Date: {format(new Date(show.released), 'MMM DD YYYY')}
             </div>
-            <div>Genre: {movie.genres.join(', ')}</div>
-            <div>IMDb Rating: {movie.imdb.rating}</div>
-            <div>IMDb Votes: {movie.imdb.votes}</div>
+            <div>Genre: {show.genres.join(', ')}</div>
+            <div>IMDb Rating: {show.imdb.rating}</div>
+            <div>IMDb Votes: {show.imdb.votes}</div>
         </div>
     );
 };
 
-export default ShowMovie;
+export default ShowtheShow;
