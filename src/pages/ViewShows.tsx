@@ -18,8 +18,8 @@ const ViewShows = () => {
 
      const [allShows, setAllShows] = useState<ShowType[]>([])
 
-     const { type } = useParams() // _id is the account number
-    const getShowsURL = `http://localhost:5173/shows/${type}`
+     const { type } = useParams() 
+    const getShowsURL = `http://localhost:5173/${type}`
     const getShowsReq = new Request(
         getShowsURL, {
         headers: {
@@ -38,7 +38,7 @@ const ViewShows = () => {
 
      return (
         <>
-            <div>ShowShows</div>
+            <div>Shows to watch!</div>
             {allShows.length > 0 ?
                 <ViewShow show={allShows[0]} />
                 :
