@@ -1,34 +1,39 @@
-import { format } from "date-and-time";
+
 
 interface MovieType {
-    _id: string;
-    title: string;
-    plot: string;
-    released: string;
-    genres: string[];
-    imdb: {
-        rating: number;
-        votes: number;
-    };
+  _id: string,
+  title: string,
+  director: string,
+  genres: string[],
+  year: number,
+  runtime: number
+  poster: string
+
 }
 
-const ShowMovie = ({ movie }: { movie?: MovieType }) => {
-    if (!movie) {
-        return <div>No movie data</div>;
-    }
-
-    return (
-        <div className="mb-3 p-3 border-2 w-75">
-            <div>Movie: {movie.title}</div>
-            <div>Plot: {movie.plot}</div>
-            <div>
-                Release Date: {format(new Date(movie.released), 'MMM DD YYYY')}
-            </div>
-            <div>Genre: {movie.genres.join(', ')}</div>
-            <div>IMDb Rating: {movie.imdb.rating}</div>
-            <div>IMDb Votes: {movie.imdb.votes}</div>
+const ViewMovie = ({ movie }: { movie: MovieType }) => {
+  console.log(movie)
+  return (
+    <>
+    {/* <Link to={`/transactions/${customer._id}`}> */}
+      <div key={movie._id} className="mb-4 p-4 border rounded shadow bg-gray-100 hover:bg-gray-250 w-100 h-115">
+        <div className="flex justify-center mb-2">
+        <div><img src={movie.poster} alt={`${movie.title} poster`} className="w-55 h-auto" /></div>
         </div>
-    );
-};
+        <p>{`${movie.title} (${movie.year})`}</p>
+        <p>{movie.director}</p>
+        <div>
+          <p>{movie.genres?.join(', ')}</p>
+        </div>
+        {/* <p>{movie.releaseDate}</p> */}
+        <p>{movie.runtime}</p>
+        {/* <p>ID: {movie._id}</p> */}
+      </div>
+    {/* </Link> */}
+    </>
+  )
 
-export default ShowMovie;
+  
+}
+
+export default ViewMovie

@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router"
 import HomePage from "./pages/HomePage"
-import ShowMovie from "./Components/VeiwMovie"
-import ViewShow from "./Components/ViewShow"
+// import ShowMovie from "./Components/VeiwMovie"
+import ViewSerie from "./Components/ViewSerie"
 import NavBar from "./Components/NavBar"
-import ViewShows from "./pages/ViewShows"
+import ViewSeries from "./pages/ViewSeries"
 function App() {
 
   return (
@@ -11,10 +11,10 @@ function App() {
       <NavBar/>
       <Routes>
         <Route index element={<HomePage/>} />
-        <Route path="/:type/:id" element={<ShowMovie/>} />
-        <Route path="/:type/:id" element= {<ViewShow/>}/>
+        {/* <Route path="/movie/:id" element={<ShowMovie/>} /> */}
+        <Route path="/series/:id" element= {<ViewSerie/>}/>
 
-        <Route path="/:type" element={<ViewShows/>} />
+        <Route path="/series" element={<ViewSeries/>} />
         {/* <Route path="/:type" element={<ViewMovies/>} /> */}
 
       </Routes>

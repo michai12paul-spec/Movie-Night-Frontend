@@ -1,114 +1,230 @@
-import { format } from "date-and-time";
+import { useEffect, useState } from "react";
+//import { useParams } from "react-router";
+import ViewSeries from "../Components/ViewSerie";
 
-interface ShowType {
-    _id: string;
-    title: string;
-    plot: string;
-    released: string;
-    genres: string[];
-    imdb: {
-        rating: number;
-        votes: number;
-    };
-}
-
-const ShowtheShow = ({ show }: { show?: ShowType }) => {
-    if (!show) {
-        return <div>No show data</div>;
+const ViewSerie = () => {
+    interface SeriesType {
+        _id: string;
+        title: string;
+        type: string;
+        plot: string;
+        released: string;
+        genres: string[];
+        imdb: {
+            rating: number;
+            votes: number;
+        };
     }
 
-    const handleVeiwShows = () => {
-        // console.log("Get 10 shows", show._id)
-        const addShowReq = new Request(
-            `http://localhost:5173/shows/${show._id}`,
-            {
-                method: 'GET'
-            }
-        )
-        fetch(addShowReq)
+    const [allSeries, setAllSereis] = useState<SeriesType[]>([])
+
+    //const { type } = useParams() 
+    const getSeriesURL = `http://localhost:2811/series`
+    const getSeriesReq = new Request(
+        getSeriesURL, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    useEffect(() => {
+        fetch(getSeriesReq)
             .then(res => res.json())
-            .then(msg => {
-                console.log(msg)
+            .then(data => {
+                console.log(data)
+                setAllSereis(data)
             })
-
-    }
+    },[])
 
     return (
-        <div key={show._id}>
-            <div className="mb-3 p-3 border-2 w-75 cursor-pointer" onClick={handleVeiwShows}>
-                <div>Movie: {show.title}</div>
-                <div>Plot: {show.plot}</div>
-                <div className="grid grid-cols-3"></div>
+        <>
+            <div>Shows to watch!</div>
 
+            {allSeries.length > 0 ? (
+                <ViewSerie serie={allSeries[0]} />
+            ) : (
+                <p>No Series Found!</p>
+            )}
+        </>
+    )
 
-                {
-                    show.genres.map((trn: ShowType) => {
-                        return (
-                        
-                        <div>
-                            Release Date: {format(new Date(show.released), 'MMM DD YYYY')}
-                        </div>
-                        <div>Genre: {show.genres.join(', ')}</div>
-                        <div>IMDb Rating: {show.imdb.rating}</div>
-                        <div>IMDb Votes: {show.imdb.votes}</div>
-                        )
-                    }
-            </div>
-        </div>
-    );
-};
-
-
-
-
-
-
-
-
-
-import { format } from "date-and-time";
-
-interface ShowType {
-    _id: string;
-    title: string;
-    plot: string;
-    released: string;
-    genres: string[];
-    imdb: {
-        rating: number;
-        votes: number;
-    };
 }
 
-const ViewShow = ({ show }: { show?: ShowType }) => {
-    if (!show) {
-        return <div>No show data</div>;
+
+export default ViewSeries
+
+
+
+
+
+
+
+
+
+useEffect(() => {
+        fetch(getSeriesReq)
+        
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setAllSeries(data);
+            });
+    }, []);
+
+
+
+
+
+
+
+
+    Series
+
+    import { useEffect, useState } from "react";
+import ViewSerie from "../Components/ViewSerie"; // this is the child component
+
+const [pageNum, setPageNum] = useState<number>(1)
+
+const ViewSeries = (pgNum: number) => { // this is the page component
+    interface SeriesType {
+        _id: string;
+        title: string;
+        type: string;
+        plot: string;
+        released: string;
+        genres: string[];
+        imdb: {
+            rating: number;
+            votes: number;
+        };
     }
 
-    const handleViewShows = () => {
-        fetch(`http://localhost:5173/show/${show._id}`)
+    const [allSeries, setAllSeries] = useState<SeriesType[]>([]);
+
+    const getSeriesURL = `http://localhost:2811/series`;
+    const getSeriesReq = new Request(getSeriesURL, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    // use effect is used to allow React to fetch data from an external source
+    useEffect(() => {
+        fetchCustomers(pageNum)
+    }, [pageNum]); // the square brackets is for dependecies of the useEffect() method
+    // and it will automatically re-render the useEffect whenever the dependcy changes
+
+    const handlePageNext = () => {
+        setPageNum(pg => pg + 1)
+    }
+    const handlePagePrev = () => {
+        setPageNum(pg => pg - 1 <= 0 ? 1 : pg - 1)
+    }
+
+    useEffect(() => {
+        fetch(getSeriesReq)
             .then(res => res.json())
-            .then(msg => {
-                console.log(msg);
+            .then(data => {
+                console.log(data);
+                setAllSeries(data);
             });
-    };
+    }, []);
 
     return (
-        <div className="mb-3 p-3 border-2 w-75 cursor-pointer" onClick={handleViewShows}>
-            <div>Movie: {show.title}</div>
-            <div>Plot: {show.plot}</div>
-            <div>
-                Release Date: {format(new Date(show.released), 'MMM DD YYYY')}
-            </div>
-            <div>Genre: {show.genres.join(', ')}</div>
-            <div>IMDb Rating: {show.imdb.rating}</div>
-            <div>IMDb Votes: {show.imdb.votes}</div>
-        </div>
+        <>
+            <div>Series to watch!</div>
+
+
+            {allSeries.length > 0 ? (
+                <div className="ml-3 flex flex-col gap-2 mt-2">
+                    {allSeries.map((serie) => (
+                        <ViewSerie key={serie._id} serie={serie} />
+                    ))}
+                </div>
+            ) : (
+                <p>No Series Found!</p>
+            )}
+
+        </>
     );
 };
 
-export default ViewShow;
+export default ViewSeries;
 
 
 
-export default ShowtheShow;
+
+
+
+
+
+
+
+
+
+useEffect
+
+
+const fetchSeries = (pgNum: number) => {
+        
+        const getSeriesURL = `http://localhost:2811/series/pg${pgNum}`;
+        const getSeriesReq = new Request(getSeriesURL, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    useEffect(() => {
+        fetch(getSeriesReq)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setAllSeries(data);
+            });
+    }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const handleViewSerie = async () => {
+    try {
+        const res = await fetch(`http://localhost:2811/series/${data._id}`);
+        const result = await res.json();
+
+        console.log(result);
+
+        // Consider sending this to parent instead of replacing local data
+        setData(result);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+        console.error("Error fetching serie:", err);
+    }
+};
+
+return (
+    <div
+        className="bg-gray-300 border-2 w-95 text-bold cursor-pointer"
+        onClick={handleViewSerie}
+    >
+        <div>Movie: {data.title}</div>
+        <div>Plot: {data.plot}</div>
+        <div>Genre: {data.genres.join(", ")}</div>
+    </div>
+);
+};
