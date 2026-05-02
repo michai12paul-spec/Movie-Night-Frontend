@@ -228,3 +228,21 @@ return (
     </div>
 );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {allSeries.map((serie) => (
+                        <ViewSerie key={serie._id} serie={serie} />

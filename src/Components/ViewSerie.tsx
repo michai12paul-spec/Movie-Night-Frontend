@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SerieType {
@@ -13,15 +12,16 @@ interface SerieType {
 }
 
 const ViewSerie = ({ serie }: { serie?: SerieType }) => {
-    const [data] = useState<SerieType | null>(serie || null);
+
+    console.log("serie:", serie);
     const navigate = useNavigate();
 
-    if (!data) {
+    if (!serie) {
         return <div>No serie data</div>;
     }
 
     const handleViewSerie = () => {
-        navigate(`/series/${data._id}`);
+        navigate(`/series/${serie._id}`);
     };
 
     return (
@@ -29,9 +29,9 @@ const ViewSerie = ({ serie }: { serie?: SerieType }) => {
             className="bg-gray-300 border-2 w-95 text-bold cursor-pointer"
             onClick={handleViewSerie}
         >
-            <div>Movie: {data.title}</div>
-            <div>Plot: {data.plot}</div>
-            <div>Genre: {data.genres.join(", ")}</div>
+            <div>Movie: {serie.title}</div>
+            <div>Plot: {serie.plot}</div>
+            <div>Genre: {serie.genres}</div>
         </div>
     );
 };

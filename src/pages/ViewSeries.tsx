@@ -29,7 +29,8 @@ const ViewSeries = () => {
         fetch(getSeriesReq)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                console.log("API data:", data);
+                //console.log(data);
                 setAllSeries(data);
             });
     };
@@ -49,7 +50,7 @@ const ViewSeries = () => {
         <>
             <div>Series to watch!</div>
 
-            {allSeries.length > 0 ? (
+            {allSeries && allSeries.length > 0 ? (
                 <div className="ml-3 flex flex-col gap-2 mt-2">
                     {allSeries.map((serie) => (
                         <ViewSerie key={serie._id} serie={serie} />
