@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage"
 import ViewSerie from "./Components/ViewSerie"
 import NavBar from "./Components/NavBar"
 import ViewSeries from "./pages/ViewSeries"
+import FavesPage from "./pages/FavesPage"
 function App() {
 
   return (
@@ -16,6 +17,8 @@ function App() {
 
         <Route path="/series" element={<ViewSeries/>} />
         {/* <Route path="/:type" element={<ViewMovies/>} /> */}
+
+        <Route path="/faves/series" element={<FavesPage/>} />
 
       </Routes>
     </>
