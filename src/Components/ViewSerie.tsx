@@ -30,7 +30,7 @@ const ViewSerie = ({ serie }: { serie?: SerieType }) => {
             className="bg-gray-300 border-2 w-95 text-bold cursor-pointer"
             onClick={handleViewSerie}
         >
-            <div>Movie: {serie.title}</div>
+            <div>Series: {serie.title}</div>
             <div>Plot: {serie.plot}</div>
             <div>Genre: {serie.genres.join(", ")}</div>
             <div><img src={serie.poster} alt={`${serie.title} poster`} className="w-55 h-auto" /></div>

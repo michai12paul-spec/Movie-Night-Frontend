@@ -5,6 +5,7 @@ const ViewSeries = () => {
     interface SeriesType {
         _id: string;
         title: string;
+        poster: string;
         type: string;
         plot: string;
         released: string;
@@ -35,6 +36,8 @@ const ViewSeries = () => {
             });
     };
 
+    
+
     useEffect(() => {
         fetchSeries(pageNum);
     }, [pageNum]);
@@ -51,7 +54,7 @@ const ViewSeries = () => {
             <div>Series to watch!</div>
 
             {allSeries && allSeries.length > 0 ? (
-                <div className="ml-3 flex flex-col gap-2 mt-2">
+                <div className="ml-3 grid grid-cols-3 gap-4 mt-2">
                     {allSeries.map((serie) => (
                         <ViewSerie key={serie._id} serie={serie} />
                     ))}
