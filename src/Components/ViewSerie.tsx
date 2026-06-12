@@ -4,6 +4,7 @@ interface SerieType {
     _id: string;
     title: string;
     plot: string;
+    poster: string;
     genres: string[];
     imdb: {
         rating: number;
@@ -31,7 +32,8 @@ const ViewSerie = ({ serie }: { serie?: SerieType }) => {
         >
             <div>Movie: {serie.title}</div>
             <div>Plot: {serie.plot}</div>
-            <div>Genre: {serie.genres}</div>
+            <div>Genre: {serie.genres.join(", ")}</div>
+            <div><img src={serie.poster} alt={`${serie.title} poster`} className="w-55 h-auto" /></div>
         </div>
     );
 };

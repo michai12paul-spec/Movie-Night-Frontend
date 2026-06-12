@@ -246,3 +246,264 @@ return (
 
   {allSeries.map((serie) => (
                         <ViewSerie key={serie._id} serie={serie} />
+
+
+
+
+
+
+
+
+
+
+                        import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+
+const ViewSerie = () => {
+    const { id } = useParams()
+    const [movie, setMovie] = useState<any>(null)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetch(`http://localhost:4040/info/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log("DETAIL:", data)
+                setMovie(data)
+            })
+    }, [id])
+
+    return (
+        <div className="p-6">
+            <h1 className="text-2xl font-bold">{movie.title}</h1>
+
+            {movie.poster}
+
+            <p><strong>Genres:</strong> {movie.genres?.join(", ")}</p>
+            <p><strong>Plot:</strong> {movie.fullplot}</p>
+            <p><strong>Year:</strong> {movie.year}</p>
+            <p><strong>Director:</strong> {movie.directors?.join(", ")}</p>
+
+            <button
+                className="mt-4 bg-blue-500 text-white p-2 rounded cursor-pointer"
+                onClick={() => {
+                    navigate("/favorites")
+                    fetch(`http://localhost:4040/favorites/add/${id}`, {
+                        method: "POST"
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            alert(data.msg || data.error)
+                        })
+                }}
+            ></button>
+        </div>
+    )
+}
+    export default ViewSerie;
+
+
+
+
+
+
+
+
+
+    <>
+            <div>Your Favourites!</div>
+
+            {allSeries && allSeries.length > 0 ? (
+                <div className="ml-3 flex flex-col gap-2 mt-2">
+                    {allSeries.map((serie) => (
+                        <ViewSerie key={serie._id} serie={serie} />
+                    ))}
+                </div>
+            ) : (
+                <p>No favourites found!</p>
+            )}
+
+           
+
+        </>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        import { useEffect, useState, type ChangeEvent } from 'react'
+import ViewMovie from '../Components/VeiwMovie'
+
+interface MovieType {
+    _id: string
+    title: string
+    director: string
+    genres: string[]
+    year: number
+    runtime: number
+    poster: string
+}
+
+const ViewMovies = () => {
+    const [allMovies, setAllMovies] = useState<MovieType[]>([])
+    const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([])
+    const [page, setPage] = useState(1)
+    const [selectedGenre, setSelectedGenre] = useState('all')
+
+    const handlePageNext = () => {
+        setPage((currentPage) => currentPage + 1)
+    }
+
+    const handlePagePrev = () => {
+        setPage((currentPage) => Math.max(1, currentPage - 1))
+    }
+
+    const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = event.target.value.toLowerCase()
+        setFilteredMovies(
+            allMovies?.filter((movie) => {
+                console.log(searchTerm, movie)
+                if (movie.title.toLowerCase().includes(searchTerm) ||
+                    // movie.director.toLowerCase().includes(searchTerm) ||
+                    // movie.genres.toLowerCase().includes(searchTerm)
+                    movie.genres.some((genre) => genre.toLowerCase().includes(searchTerm))
+                ) {
+                    return movie
+                }
+            }),
+        )
+    }
+
+    
+const handleGenreChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const genre = event.target.value
+    setSelectedGenre(genre)
+
+    setFilteredMovies(
+        allMovies.filter(movie =>
+            genre === 'all' ? true : movie.genres.includes(genre)
+        )
+    )
+}
+
+    
+
+    useEffect(() => {
+        const getMoviesUrl = `http://localhost:4040/movie/p${page}`
+        // const getMoviesUrl2 = `http://localhost:4040/series/p${page}`
+        //  http://localhost:4040/movie/p6
+        fetch(getMoviesUrl, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data: MovieType[]) => {
+                setAllMovies(data)
+                setFilteredMovies(data)
+            })
+    }, [page])
+
+    return (
+        <>
+            <div className="flex flex-col items-center">
+                <div className="mb-4 border-b-2 text-center text-xl font-bold">MOVIES</div>
+                <input
+                    type="text"
+                    placeholder="Search by title, director, or genre"
+                    className="mb-4 w-full rounded-lg border p-2"
+                    onChange={handleSearch}
+                />
+                <select
+                    value={selectedGenre}
+                    onChange={handleGenreChange}
+                    className="mb-4 w-full rounded-lg border p-2"
+                >
+                    <option value="all">All Genres</option>
+                    {Array.from(new Set(allMovies.flatMap(m => m.genres))).map(genre => (
+                        <option key={genre} value={genre}>{genre}</option>
+                    ))}
+                </select>
+            </div>
+            <div className="grid grid-cols-3 items-center border-b-2 p-4 text-center text-xl font-bold">
+                {filteredMovies.length > 0 ? (
+                    filteredMovies.map((movie) => <ViewMovie key={movie._id} movie={movie} />)
+                ) : (
+                    <p>No movies found</p>
+                )}
+            </div>
+            <div className="mt-4 flex justify-between gap-4">
+                <button className="w-24 cursor-pointer rounded-lg border p-3" onClick={handlePagePrev}>Prev</button>
+                <button className="w-24 cursor-pointer rounded-lg border p-3" onClick={handlePageNext}>Next</button>
+            </div>
+        </>
+    )
+}
+
+export default ViewMovies
+
+
+
+
+
+
+
+
+
+
+
+interface MovieType {
+  _id: string,
+  title: string,
+  director: string,
+  genres: string[],
+  year: number,
+  runtime: number
+  poster: string
+
+}
+
+const ViewMovie = ({ movie }: { movie: MovieType }) => {
+  console.log(movie)
+  return (
+    <>
+
+      <div key={movie._id} className="mb-4 p-4 border rounded shadow bg-gray-100 hover:bg-gray-250 w-100 h-115">
+
+        <div className="flex justify-center mb-2">
+
+          <div>
+            <img src={movie.poster} alt={`${movie.title} poster`} className="w-55 h-auto" />
+          </div>
+          
+        </div>
+
+        <p>{`${movie.title} (${movie.year})`}</p>
+        <p>{movie.director}</p>
+
+        <div>
+          <p>{movie.genres?.join(', ')}</p>
+        </div>
+
+        <p>{movie.runtime}</p>
+
+      </div>
+
+    </>
+  )
+
+
+}
+
+export default ViewMovie
