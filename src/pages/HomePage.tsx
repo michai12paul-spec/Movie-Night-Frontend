@@ -17,7 +17,7 @@ interface MediaType {
 }
 
 const HomePage = () => {
-    // const [media, setMedia] = useState<MediaType[]>([]);
+    const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredMedia, setFilteredMedia] = useState<MediaType[]>([]);
     const [pageNum, setPageNum] = useState<number>(1);
     const [filter, setFilter] = useState("all");
