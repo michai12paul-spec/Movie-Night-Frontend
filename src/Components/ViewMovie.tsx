@@ -25,13 +25,13 @@ const ViewMovie = ({ movie }: { movie?: MovieType }) => {
 
     return (
         <div
-            className="mt-6 cursor-pointer hover:scale-105 duration-200 border rounded shadow-lg overflow-hidden w-70"
+            className="mt-6 cursor-pointer hover:scale-105 duration-200 border-2 rounded shadow-lg shadow-amber-200 overflow-hidden w-70"
             onClick={handleViewMovie}
         >
             <img
                 src={movie.poster}
                 alt={`${movie.title} poster`}
-                className="object-cover w-full shadow-lg"
+                className="object-cover w-full h-full shadow-lg"
             />
         </div>
     );

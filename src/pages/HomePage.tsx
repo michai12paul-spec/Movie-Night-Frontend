@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import ViewSerie from "../Components/ViewSerie";
 import ViewMovie from "../Components/ViewMovie";
 
@@ -19,9 +19,35 @@ interface MediaType {
 const HomePage = () => {
     const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredMedia, setFilteredMedia] = useState<MediaType[]>([]);
+    const [selectedGenre, setSelectedGenre] = useState('all')
     const [pageNum, setPageNum] = useState<number>(1);
     const [filter, setFilter] = useState("all");
 
+
+
+
+    // Find all unique genres from the media data
+    const handleGenreChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const genre = event.target.value
+        setSelectedGenre(genre)
+
+        setFilteredMedia(
+            media.filter(item =>
+                genre === 'all' ? true : item.genres.includes(genre)
+            )
+        )
+    }
+
+
+
+
+
+
+
+
+
+
+    // Fetch both movies and series based on the filter
     const fetchMedia = async (pgNum: number) => {
         let data: MediaType[] = [];
 
@@ -64,52 +90,92 @@ const HomePage = () => {
     };
 
     return (
-        <div>
-            <h1>HomePage</h1>
+        <div className="bg-zinc-600">
+            <h1 className="flex flex-col p-2 ml-135 font-bold text-white text-xl">Golden Movie Night</h1>
 
-            <div className="ml-3 mt-3">
-                <label className="mr-2 font-bold">
-                    Filter:
-                </label>
+            <div className="ml-3 mt-3 ">
 
-                <select
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    className="border rounded p-2"
-                >
-                    <option value="all">
-                        All
-                    </option>
 
-                    <option value="movies">
-                        Movies
-                    </option>
 
-                    <option value="series">
-                        Series
-                    </option>
-                </select>
+                {/* Genre filter  */}
+                <div>
+                    <label className="mr-2 font-bold text-white text-lg ">
+                        Genre Filter:
+                    </label>
+
+                    <select
+                        value={selectedGenre}
+                        onChange={handleGenreChange}
+                        className="border rounded p-2 cursor-pointer text-black bg-mauve-400 mb-2"
+                    >
+                        <option value="all">All Genres</option>
+
+                        {Array.from(
+                            new Set(media.flatMap((m) => m.genres))
+                        ).map((genre) => (
+                            <option key={genre} value={genre}>
+                                {genre}
+                            </option>
+                        ))}
+                    </select>
+
+                </div>
+
+
+                {/* Film filter Sereis/Movies */}
+                <div>
+                    <label className="mr-2 font-bold text-white text-lg ">
+                        Film Filter:
+                    </label>
+
+                    <select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="border rounded p-2 cursor-pointer text-black bg-mauve-400"
+                    >
+                        <option value="all">
+                            All
+                        </option>
+
+                        <option value="movies">
+                            Movies
+                        </option>
+
+                        <option value="series">
+                            Series
+                        </option>
+                    </select>
+                </div>
+
+                {filteredMedia.length > 0 ? (
+                    <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
+                        {filteredMedia.map((item) =>
+                            item.type === "series" ? (
+                                <ViewSerie
+                                    key={item._id}
+                                    serie={item}
+                                />
+                            ) : (
+                                <ViewMovie
+                                    key={item._id}
+                                    movie={item}
+                                />
+                            )
+                        )}
+                    </div>
+                ) : (
+                    <p>No Media Found!</p>
+
+
+
+                )}
             </div>
 
-            {filteredMedia.length > 0 ? (
-                <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
-                    {filteredMedia.map((item) =>
-                        item.type === "series" ? (
-                            <ViewSerie
-                                key={item._id}
-                                serie={item}
-                            />
-                        ) : (
-                            <ViewMovie
-                                key={item._id}
-                                movie={item}
-                            />
-                        )
-                    )}
-                </div>
-            ) : (
-                <p>No Media Found!</p>
-            )}
+
+
+
+
+
 
             <div className="flex justify-around mt-3">
                 <div

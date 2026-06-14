@@ -14,7 +14,7 @@ interface SerieType {
 
 const ViewSerie = ({ serie }: { serie?: SerieType }) => {
 
-    console.log("serie:", serie);
+    console.log("series:", serie);
     const navigate = useNavigate();
 
     if (!serie) {
@@ -27,7 +27,7 @@ const ViewSerie = ({ serie }: { serie?: SerieType }) => {
 
     return (
     <div
-        className="mt-6 cursor-pointer hover:scale-105 duration-200 border rounded shadow-lg overflow-hidden w-70"
+        className="mt-6 cursor-pointer hover:scale-105 duration-200 border-2 rounded shadow-lg overflow-hidden w-70"
         onClick={handleViewSerie}
     >
         <img
