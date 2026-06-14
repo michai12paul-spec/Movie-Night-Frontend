@@ -13,6 +13,7 @@ function App() {
     <>
       <NavBar />
       <Routes>
+        
         <Route index element={<HomePage />} />
         <Route path="/movie/:id" element={<ViewMovie />} />
         <Route path="/series/:id" element={<ViewSerie />} />

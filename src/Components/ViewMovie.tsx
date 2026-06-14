@@ -13,8 +13,6 @@ interface MovieType {
 }
 
 const ViewMovie = ({ movie }: { movie?: MovieType }) => {
-
-    console.log("movie:", movie);
     const navigate = useNavigate();
 
     if (!movie) {
@@ -27,14 +25,14 @@ const ViewMovie = ({ movie }: { movie?: MovieType }) => {
 
     return (
         <div
-            className="bg-gray-300 border-2 w-95 text-bold cursor-pointer"
+            className="mt-6 cursor-pointer hover:scale-105 duration-200 border rounded shadow-lg overflow-hidden w-70"
             onClick={handleViewMovie}
         >
-            <div>Movie: {movie.title}</div>
-            <div>Plot: {movie.plot}</div>
-            <div>Genre: {movie.genres.join(", ")}</div>
-            {/* <div>Rating: {movie.imdb.rating}</div> */}
-            <div><img src={movie.poster} alt={`${movie.title} poster`} className="w-55 h-auto" /></div>
+            <img
+                src={movie.poster}
+                alt={`${movie.title} poster`}
+                className="object-cover w-full shadow-lg"
+            />
         </div>
     );
 };

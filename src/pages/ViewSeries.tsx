@@ -54,17 +54,23 @@ const ViewSeries = () => {
             <div>Series to watch!</div>
 
             {allSeries && allSeries.length > 0 ? (
-                <div className="ml-3 grid grid-cols-3 gap-4 mt-2">
+                <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
                     {allSeries.map((serie) => (
                         <ViewSerie key={serie._id} serie={serie} />
                     ))}
+                    
                 </div>
             ) : (
                 <p>No Series Found!</p>
+
+                
             )}
 
             <div className="flex justify-around mt-3">
                 <div className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-slate-300" onClick={handlePagePrev}>Prev</div>
+
+                    <div>Page {pageNum}</div>
+
                 <div className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-slate-300" onClick={handlePageNext}>Next</div>
             </div>
 

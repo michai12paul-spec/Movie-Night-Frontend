@@ -26,16 +26,17 @@ const ViewSerie = ({ serie }: { serie?: SerieType }) => {
     };
 
     return (
-        <div
-            className="bg-gray-300 border-2 w-95 text-bold cursor-pointer"
-            onClick={handleViewSerie}
-        >
-            <div>Series: {serie.title}</div>
-            <div>Plot: {serie.plot}</div>
-            <div>Genre: {serie.genres.join(", ")}</div>
-            <div><img src={serie.poster} alt={`${serie.title} poster`} className="w-55 h-auto" /></div>
-        </div>
-    );
+    <div
+        className="mt-6 cursor-pointer hover:scale-105 duration-200 border rounded shadow-lg overflow-hidden w-70"
+        onClick={handleViewSerie}
+    >
+        <img
+            src={serie.poster}
+            alt={`${serie.title} poster`}
+            className="object-cover w-full shadow-lg"
+        />
+    </div>
+);
 };
 
 export default ViewSerie;

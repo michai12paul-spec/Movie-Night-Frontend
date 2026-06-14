@@ -507,3 +507,83 @@ const ViewMovie = ({ movie }: { movie: MovieType }) => {
 }
 
 export default ViewMovie
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { useEffect, useState } from "react";
+// import ViewSeries from "./ViewSeries";
+// import ViewMovies from "./ViewMovies";
+import ViewSerie from "../Components/ViewSerie";
+import ViewMovie from "../Components/ViewMovie";
+
+interface MediaType {
+    _id: string;
+    title: string;
+    poster: string;
+    type: string; // "movie" or "series"
+    plot: string;
+    released: string;
+    genres: string[];
+    imdb: {
+        rating: number;
+        votes: number;
+    };
+}
+
+const HomePage = () => {
+  const [media, setMedia] = useState<MediaType[]>([]);
+
+  useEffect(() => {
+
+    const [pageNum, setPageNum] = useState<number>(1);
+        Promise.all([
+            fetch(`http://localhost:2811/movie/pg${pgNum}`).then(res => res.json()),
+            fetch(`http://localhost:2811/series/pg${pgNum}`).then(res => res.json())
+        ])
+        
+        .then(([movie, series]) => {
+            // Combine both arrays
+            const combined = [...movie, ...series];
+
+            // Shuffle array
+            const shuffled = combined.sort(() => Math.random() - 0.5);
+
+            setMedia(shuffled);
+        })
+        .catch(err => console.log(err));
+    }, []);
+  return (
+     <div>
+            <h1>HomePage</h1>
+
+            {media.map((item) =>
+                item.type === "series" ? (
+                    <ViewSerie key={item._id} serie={item} />
+                ) : (
+                    <ViewMovie key={item._id} movie={item} />
+                )
+            )}
+        </div>
+    );
+};
+ 
+
+export default HomePage
