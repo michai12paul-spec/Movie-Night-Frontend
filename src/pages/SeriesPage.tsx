@@ -11,8 +11,6 @@ interface SerieType {
         rating: number;
         votes: number;
     };
-
-    
 }
 
 const SeriesPage = () => {
@@ -22,15 +20,30 @@ const SeriesPage = () => {
         useState<SerieType | null>(null);
 
     useEffect(() => {
-        console.log("id:", id);
+        if (!id) return;
 
-        fetch(`http://localhost:2811/series/view/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log("series data:", data);
+        console.log(
+            "id:",
+            id
+        );
+
+        if (!id) return;
+
+        fetch(
+            `http://localhost:2811/series/view/${id}`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(
+                    "series data:",
+                    data
+                );
+
                 setSerie(data);
             })
-            .catch(err => console.log(err));
+            .catch((err) =>
+                console.log(err)
+            );
     }, [id]);
 
     if (!serie) {
@@ -38,30 +51,41 @@ const SeriesPage = () => {
     }
 
     return (
-        <div className="p-6">
-            <img
-                src={serie.poster}
-                alt={serie.title}
-                className="w-80 rounded-lg"
-            />
+        <div className="p-8 flex flex-col items-center bg-zinc-600">
+            <div className="bg-zinc-700 p-6 rounded-lg shadow-lg shadow-amber-400 max-w-3xl w-full text-white">
+                <img
+                    src={serie.poster}
+                    alt={serie.title}
+                    className="w-80 rounded-lg"
+                />
 
-            <h1 className="text-3xl font-bold mt-4">
-                {serie.title}
-            </h1>
+                <h1 className="text-3xl font-bold mt-4">
+                    {serie.title}
+                </h1>
 
-            <p className="mt-3">
-                {serie.plot}
-            </p>
+                <p className="mt-3">
+                    {serie.plot}
 
-            <p className="mt-3">
-                Rating: {serie.imdb.rating}
-            </p>
+                    {(!serie.plot) && (
+                        <p>
+                            No plot available.
+                        </p>
+                    )}
 
-            <p>
-                Genres:
-                {" "}
-                {serie.genres}
-            </p>
+                </p>
+
+                <p className="mt-3">
+                    Rating:
+                    {" "}
+                    {serie.imdb?.rating}
+                </p>
+
+                <p className="mt-3">
+                    Genres:
+                    {" "}
+                    {serie.genres.join(", ")}
+                </p>
+            </div>
         </div>
     );
 };

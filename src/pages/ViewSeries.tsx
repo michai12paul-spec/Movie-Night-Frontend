@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import ViewSerie from "../Components/ViewSerie";
 
+
+interface SeriesType {
+    _id: string;
+    title: string;
+    poster: string;
+    type: string;
+    plot: string;
+    released: string;
+    genres: string[];
+    imdb: {
+        rating: number;
+        votes: number;
+    };
+}
+
 const ViewSeries = () => {
-    interface SeriesType {
-        _id: string;
-        title: string;
-        poster: string;
-        type: string;
-        plot: string;
-        released: string;
-        genres: string[];
-        imdb: {
-            rating: number;
-            votes: number;
-        };
-    }
 
     const [allSeries, setAllSeries] = useState<SeriesType[]>([]);
     const [pageNum, setPageNum] = useState<number>(1);
@@ -30,12 +32,23 @@ const ViewSeries = () => {
         fetch(getSeriesReq)
             .then((res) => res.json())
             .then((data) => {
-                const seriesArray = data.series || data.data || data;
 
-                console.log("Actual Array:", seriesArray);
-                console.log("First item:", seriesArray[0]);
+                const seriesArray =
+                    data.series ||
+                    data.data ||
+                    data;
+
+                console.log(
+                    "Actual Array:",
+                    seriesArray
+                );
+
                 setAllSeries(seriesArray);
-            });
+            })
+
+            .catch((err) =>
+                console.log(err)
+            );
     };
 
 
@@ -55,10 +68,31 @@ const ViewSeries = () => {
         <>
             <div>Series to watch!</div>
 
-            {allSeries && allSeries.length > 0 ? (
+            {allSeries.length > 0 ? (
                 <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
+
                     {allSeries.map((series) => (
-                        <ViewSerie key={series._id} serie={series} />
+
+                        <div
+                            key={series._id}
+
+                            
+                            // onClick={() =>
+                            //     window.location.href =
+                            //     `/series/${series._id}`
+                            // }
+
+                            
+                            className="cursor-pointer"
+                        >
+
+                            
+                            <ViewSerie
+                                serie={series}
+                            />
+
+                        </div>
+
                     ))}
 
                 </div>

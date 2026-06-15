@@ -1,4 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import ViewSerie from "../Components/ViewSerie";
 import ViewMovie from "../Components/ViewMovie";
 
@@ -16,8 +17,10 @@ interface MediaType {
     };
 }
 
+
 const HomePage = () => {
     const [media, setMedia] = useState<MediaType[]>([]);
+    const navigate = useNavigate();
     const [filteredMedia, setFilteredMedia] = useState<MediaType[]>([]);
     const [selectedGenre, setSelectedGenre] = useState("all");
     const [ratingSearch, setRatingSearch] = useState("");
@@ -193,7 +196,7 @@ const HomePage = () => {
                     <select
                         value={filter}
                         onChange={(e) =>
-                            setFilter(e.target.value)}className="border rounded p-2 cursor-pointer text-black bg-mauve-400">
+                            setFilter(e.target.value)} className="border rounded p-2 cursor-pointer text-black bg-mauve-400">
                         <option value="all">
                             All
                         </option>
@@ -212,21 +215,47 @@ const HomePage = () => {
                 {filteredMedia.length >
                     0 ? (
                     <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
-                        {filteredMedia.map(
-                            (item) =>
-                                item.type === "series" ? (
-                                    <ViewSerie key={item._id}serie={item}/>
-                                ) : (
-                                    <ViewMovie
-                                        key={
-                                            item._id
-                                        }
-                                        movie={
-                                            item
-                                        }
+                        {filteredMedia.map((item) => (
+
+                            <div
+                                key={item._id}
+
+                                // ✅ NEW
+                                onClick={() =>
+                                    navigate(
+
+                                        item.type ===
+                                            "series"
+
+                                            ? `/movie/${item._id}`
+
+                                            : `/series/${item._id}`
+                                    )
+                                }
+
+                                // ✅ NEW
+                                className="cursor-pointer"
+                            >
+
+                                {item.type ===
+                                    "series" ? (
+
+                                    <ViewSerie
+                                        serie={item}
                                     />
-                                )
-                        )}
+
+                                ) : (
+
+                                    <ViewMovie
+                                        movie={item}
+                                    />
+
+                                )}
+
+                            </div>
+
+                        ))}
+
                     </div>
                 ) : (
                     <p>
@@ -236,9 +265,9 @@ const HomePage = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-around mt-3">
+            <div className="flex justify-around mt-3 p-4">
                 <div
-                    className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-slate-300"
+                    className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-amber-400"
                     onClick={
                         handlePagePrev
                     }
@@ -251,7 +280,7 @@ const HomePage = () => {
                 </div>
 
                 <div
-                    className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-slate-300"
+                    className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-amber-400"
                     onClick={
                         handlePageNext
                     }

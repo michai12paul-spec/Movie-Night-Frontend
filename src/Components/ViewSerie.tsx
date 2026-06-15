@@ -14,7 +14,7 @@ interface SerieType {
 
 const ViewSerie = ({ serie }: { serie: SerieType }) => {
 
-    console.log("series:", serie);
+    // console.log("series:", serie);
     const navigate = useNavigate();
 
     if (!serie) {
