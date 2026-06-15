@@ -193,12 +193,7 @@ const HomePage = () => {
                     <select
                         value={filter}
                         onChange={(e) =>
-                            setFilter(
-                                e.target.value
-                            )
-                        }
-                        className="border rounded p-2 cursor-pointer text-black bg-mauve-400"
-                    >
+                            setFilter(e.target.value)}className="border rounded p-2 cursor-pointer text-black bg-mauve-400">
                         <option value="all">
                             All
                         </option>
@@ -219,16 +214,8 @@ const HomePage = () => {
                     <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
                         {filteredMedia.map(
                             (item) =>
-                                item.type ===
-                                    "series" ? (
-                                    <ViewSerie
-                                        key={
-                                            item._id
-                                        }
-                                        serie={
-                                            item
-                                        }
-                                    />
+                                item.type === "series" ? (
+                                    <ViewSerie key={item._id}serie={item}/>
                                 ) : (
                                     <ViewMovie
                                         key={

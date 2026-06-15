@@ -11,6 +11,8 @@ interface SerieType {
         rating: number;
         votes: number;
     };
+
+    
 }
 
 const SeriesPage = () => {

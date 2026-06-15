@@ -12,13 +12,13 @@ interface SerieType {
     };
 }
 
-const ViewSerie = ({ serie }: { serie?: SerieType }) => {
+const ViewSerie = ({ serie }: { serie: SerieType }) => {
 
     console.log("series:", serie);
     const navigate = useNavigate();
 
     if (!serie) {
-        return <div>No serie data</div>;
+        return <div>No series data</div>;
     }
 
     const handleViewSerie = () => {

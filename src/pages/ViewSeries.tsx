@@ -20,7 +20,7 @@ const ViewSeries = () => {
     const [pageNum, setPageNum] = useState<number>(1);
 
     const fetchSeries = (pgNum: number) => {
-        const getSeriesURL = `http://localhost:2811/series/pg${pgNum}`;
+        const getSeriesURL = `http://localhost:2811/series/${pgNum}`;
         const getSeriesReq = new Request(getSeriesURL, {
             headers: {
                 "Content-Type": "application/json",
@@ -55,8 +55,8 @@ const ViewSeries = () => {
 
             {allSeries && allSeries.length > 0 ? (
                 <div className="ml-3 grid grid-cols-4 gap-4 mt-2">
-                    {allSeries.map((serie) => (
-                        <ViewSerie key={serie._id} serie={serie} />
+                    {allSeries.map((series) => (
+                        <ViewSerie key={series._id} serie={series} />
                     ))}
 
                 </div>

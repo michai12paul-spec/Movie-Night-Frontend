@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router"
 import HomePage from "./pages/HomePage"
 // import ShowMovie from "./Components/VeiwMovie"
 import ViewSerie from "./Components/ViewSerie"
+import SeriesPage from "./pages/ViewSeries"
 import NavBar from "./Components/NavBar"
 import ViewSeries from "./pages/ViewSeries"
 import FavesPage from "./pages/FavesPage"
@@ -16,7 +17,7 @@ function App() {
         
         <Route index element={<HomePage />} />
         <Route path="/movie/:id" element={<ViewMovie />} />
-        <Route path="/series/:id" element={<ViewSerie />} />
+        <Route path="/series/:id" element={<SeriesPage />} />
 
         <Route path="/series" element={<ViewSeries />} />
         <Route path="/:type" element={<ViewMovies />} />
