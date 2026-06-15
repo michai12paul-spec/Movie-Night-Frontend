@@ -31,12 +31,12 @@ const ViewSeries = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log("API data:", data);
-                //console.log(data);
+                console.log("First item:", data[0]);
                 setAllSeries(data);
             });
     };
 
-    
+
 
     useEffect(() => {
         fetchSeries(pageNum);
@@ -58,18 +58,18 @@ const ViewSeries = () => {
                     {allSeries.map((serie) => (
                         <ViewSerie key={serie._id} serie={serie} />
                     ))}
-                    
+
                 </div>
             ) : (
                 <p>No Series Found!</p>
 
-                
+
             )}
 
             <div className="flex justify-around mt-3">
                 <div className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-slate-300" onClick={handlePagePrev}>Prev</div>
 
-                    <div>Page {pageNum}</div>
+                <div>Page {pageNum}</div>
 
                 <div className="border rounded p-2 w-24 cursor-pointer justify-center flex hover:bg-slate-300" onClick={handlePageNext}>Next</div>
             </div>
