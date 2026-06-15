@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router"
 import HomePage from "./pages/HomePage"
 // import ShowMovie from "./Components/VeiwMovie"
-import ViewSerie from "./Components/ViewSerie"
+// import ViewSerie from "./Components/ViewSerie"
 import SeriesPage from "./pages/ViewSeries"
 import NavBar from "./Components/NavBar"
 import ViewSeries from "./pages/ViewSeries"

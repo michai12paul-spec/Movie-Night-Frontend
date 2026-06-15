@@ -20,7 +20,7 @@ const ViewSeries = () => {
     const [pageNum, setPageNum] = useState<number>(1);
 
     const fetchSeries = (pgNum: number) => {
-        const getSeriesURL = `http://localhost:2811/series/${pgNum}`;
+        const getSeriesURL = `http://localhost:2811/series/paginate/${pgNum}`;
         const getSeriesReq = new Request(getSeriesURL, {
             headers: {
                 "Content-Type": "application/json",
@@ -30,9 +30,11 @@ const ViewSeries = () => {
         fetch(getSeriesReq)
             .then((res) => res.json())
             .then((data) => {
-                console.log("API data:", data);
-                console.log("First item:", data[0]);
-                setAllSeries(data);
+                const seriesArray = data.series || data.data || data;
+
+                console.log("Actual Array:", seriesArray);
+                console.log("First item:", seriesArray[0]);
+                setAllSeries(seriesArray);
             });
     };
 

@@ -20,7 +20,7 @@ const ViewMovies = () => {
     const [pageNum, setPageNum] = useState<number>(1);
 
     const fetchMovies = (pgNum: number) => {
-        const getMoviesURL = `http://localhost:2811/movie/${pgNum}`;
+        const getMoviesURL = `http://localhost:2811/movie/paginate/${pgNum}`;
         const getMoviesReq = new Request(getMoviesURL, {
             headers: {
                 "Content-Type": "application/json",

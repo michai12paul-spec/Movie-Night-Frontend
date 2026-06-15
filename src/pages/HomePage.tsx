@@ -70,7 +70,7 @@ const HomePage = () => {
             filter === "all"
         ) {
             const movies = await fetch(
-                `http://localhost:2811/movie/pg${pgNum}`
+                `http://localhost:2811/movie/paginate/${pgNum}`
             ).then((res) => res.json());
 
             data = [...data, ...movies];
@@ -81,7 +81,7 @@ const HomePage = () => {
             filter === "all"
         ) {
             const series = await fetch(
-                `http://localhost:2811/series/pg${pgNum}`
+                `http://localhost:2811/series/paginate/${pgNum}`
             ).then((res) => res.json());
 
             data = [...data, ...series];

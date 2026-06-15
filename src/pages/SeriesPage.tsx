@@ -24,7 +24,7 @@ const SeriesPage = () => {
     useEffect(() => {
         console.log("id:", id);
 
-        fetch(`http://localhost:2811/series/${id}`)
+        fetch(`http://localhost:2811/series/view/${id}`)
             .then(res => res.json())
             .then(data => {
                 console.log("series data:", data);
