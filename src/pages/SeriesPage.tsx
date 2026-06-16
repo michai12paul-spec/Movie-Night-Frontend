@@ -46,6 +46,30 @@ const SeriesPage = () => {
             );
     }, [id]);
 
+    const addToFavorites = async () => {
+        try {
+            const res = await fetch(
+                `http://localhost:2811/faves/add/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            
+
+            const data = await res.json();
+
+            alert(data.message);
+        }
+        catch (err) {
+            console.log(err);
+            alert("Failed to add to favourites");
+        }
+    };
+
     if (!serie) {
         return <p>Loading...</p>;
     }
@@ -85,6 +109,13 @@ const SeriesPage = () => {
                     {" "}
                     {serie.genres.join(", ")}
                 </p>
+
+                <button
+                onClick={addToFavorites}
+                className="mt-4 bg-stone-600 border border-2 border-amber-400 text-black px-4 py-2 rounded hover:bg-amber-400 hover:text-white transition-colors duration-300 hover:border-amber-700"
+            >
+                Add to Favourites
+            </button>
             </div>
         </div>
     );
