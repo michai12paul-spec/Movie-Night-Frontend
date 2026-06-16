@@ -24,7 +24,7 @@ function App() {
 
         <Route path="/:type" element={<ViewMovies />} />
 
-        <Route path="/faves/series" element={<FavesPage />} />
+        <Route path="/faves/all" element={<FavesPage />} />
 
       </Routes>
     </>

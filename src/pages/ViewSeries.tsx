@@ -77,10 +77,10 @@ const ViewSeries = () => {
                             key={series._id}
 
                             
-                            // onClick={() =>
-                            //     window.location.href =
-                            //     `/series/${series._id}`
-                            // }
+                             onClick={() =>
+                                window.location.href =
+                                `/series/${series._id}`
+                             }
 
                             
                             className="cursor-pointer"

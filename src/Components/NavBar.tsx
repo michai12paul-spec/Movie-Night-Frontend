@@ -7,7 +7,7 @@ const NavBar = () => {
             <Link className="font-bold text-xl p-2 text-left" to="/">Home</Link>
             {/* <Link className="font-bold text-xl p-2" to="/series">View All Series</Link>
             <Link className="font-bold text-xl p-2" to="/movie">View All Movies</Link>  */}
-            <Link className="font-bold text-xl p-2" to="/faves/series">Your Favourites</Link>
+            <Link className="font-bold text-xl p-2" to="/faves/all">Your Favourites</Link>
         </div>
     )
 }
