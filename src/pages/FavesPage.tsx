@@ -1,54 +1,103 @@
-import { useEffect, useState } from "react";
-import ViewSerie from "../Components/ViewSerie";
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
-interface SeriesType {
-    _id: string;
-    title: string;
-    type: string;
-    plot: string;
-    poster: string;
-    released: string;
-    genres: string[];
-    imdb: {
-        rating: number;
-        votes: number;
-    };
+interface FavoriteItem {
+  _id: string
+  showID: string
+  note: string
+  watched: boolean
 }
-const FavesPage = () => {
 
-    const [allSeries, setAllSeries] = useState<SeriesType[]>([]);
+interface Movie {
+  _id: string
+  title: string
+  year: number
+  poster: string
+  plot: string
+}
 
-    useEffect(() => {
-        const getFavesURL = `http://localhost:2811/faves/all`;
+const Favorites = () => {
+  const [favorites, setFavorites] = useState<(FavoriteItem & { movie?: Movie })[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-        fetch(getFavesURL, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("API data:", data);
-                setAllSeries(data);
-            })
-            .catch((err) => console.error("Fetch error:", err));
-    }, []);
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        const response = await fetch('http://localhost:2811/faves/all')
+        if (!response.ok) {
+          throw new Error('Failed to load favorites')
+        }
 
-    return (
-        <>
-            <div>Your Favourites!</div>
+        const data: FavoriteItem[] = await response.json()
+        const withMovies = await Promise.all(
+          data.map(async (fav) => {
+            try {
+              const movieResponse = await fetch(`http://localhost:2811/movie/${fav.showID}`)
+              const movieData = await movieResponse.json()
+              return { ...fav, movie: movieData }
+            } catch {
+              return fav
+            }
+          })
+        )
 
-            {allSeries.length > 0 ? (
-                <div className="ml-3 flex flex-col gap-2 mt-2">
-                    {allSeries.map((serie) => (
-                        <ViewSerie key={serie._id} serie={serie} />
-                    ))}
-                </div>
-            ) : (
-                <p>No favourites found!</p>
-            )}
-        </>
-    );
-};
+        setFavorites(withMovies)
+      } catch (err) {
+        setError('Could not load favorites. Verify the backend is running.')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-export default FavesPage;
+    loadFavorites()
+  }, [])
+
+  return (
+    <div className="p-4 bg-zinc-700 min-h-screen">
+      <h1 className="mb-4 text-3xl font-bold text-white">My Favorites</h1>
+
+      {loading && <p className="text-white">Loading favorites...</p>}
+      {error && <p className="text-red-400">{error}</p>}
+
+      {!loading && !error && favorites.length === 0 && (
+        <p className="text-gray-300">No favorites yet. Add a movie to favorites from the home page.</p>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {favorites.map((fav) => (
+          <div key={fav._id} className="rounded-xl border bg-zinc-800 p-4 shadow-lg shadow-amber-400">
+            <h2 className="text-xl font-semibold text-white">{fav.movie?.title ?? fav.showID}</h2>
+            <p className="text-sm text-gray-400">Year: {fav.movie?.year ?? 'Unknown'}</p>
+            <p className="mt-2 text-gray-300">{fav.movie?.plot ?? 'No movie details available'}</p>
+            {fav.note && <p className="mt-3 text-gray-200">Note: {fav.note}</p>}
+            <p className="mt-2 text-sm text-gray-400">Status: {fav.watched ? 'Watched' : 'Not watched'}</p>
+            <div className="mt-3 flex gap-3">
+              <Link to={`/show/${fav.showID}`} className="rounded bg-blue-600 px-3 py-1 text-white">Watch</Link>
+              <button
+                className="rounded bg-red-600 px-3 py-1 text-white"
+                onClick={async () => {
+                  if (!confirm('Remove this favourite?')) return
+                  try {
+                    const resp = await fetch(`http://localhost:2811/faves/remove/${fav._id}`, { method: 'DELETE' })
+                    const data = await resp.json()
+                    if (!resp.ok) throw new Error(data.error || 'Delete failed')
+                    setFavorites(prev => prev.filter(p => p._id !== fav._id))
+                  } catch (e) {
+                    console.error('Failed to delete favourite', e)
+                    alert('Could not delete favourite')
+                  }
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default Favorites

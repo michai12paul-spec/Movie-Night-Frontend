@@ -125,7 +125,7 @@ const HomePage = () => {
     };
 
     return (
-        <div className="bg-zinc-600">
+        <div className="bg-zinc-700">
             <h1 className="flex flex-col p-2 ml-135 font-bold text-white text-xl">
                 Golden Movie Night
             </h1>
